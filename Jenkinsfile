@@ -7,11 +7,6 @@ node {
     stage('configure Maven') {
      tool name: 'maven', type: 'maven'
     }
-    stage('Initialize') {
-      sh 'export M2_HOME=/home/apache-maven-3.5.0'
-      sh 'export PATH=$PATH:$M2_HOME/bin'
-      sh "mvn --version"
-    }
     stage('checkout') {
         checkout scm
     }
