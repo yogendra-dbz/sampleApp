@@ -17,7 +17,6 @@ node {
      stage('check maven') {
      	def mvnHome = tool 'maven'
   	env.PATH = "${mvnHome}/bin:${env.PATH}"
-  	sh 'mvn -B verify'
     }
 
     stage('clean') {
