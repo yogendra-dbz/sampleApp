@@ -31,7 +31,10 @@ node {
     stage('yarn install') {
         sh "mvn com.github.eirslett:frontend-maven-plugin:yarn"
     }
-
+    
+    stage('gulp install') {
+        sh "mvn com.github.eirslett:frontend-maven-plugin:gulp"
+    }
     stage('backend tests') {
         try {
             sh "mvn test"
