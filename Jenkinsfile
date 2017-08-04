@@ -8,8 +8,8 @@ node {
      tool name: 'maven', type: 'maven'
     }
     stage('Initialize') {
-      sh 'echo "PATH = ${PATH}"'
-      sh 'echo "M2_HOME = ${M2_HOME}"'
+      sh 'export M2_HOME=/home/apache-maven-3.5.0'
+      sh 'export PATH=$PATH:$M2_HOME/bin'
     }
     stage('checkout') {
         checkout scm
