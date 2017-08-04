@@ -31,7 +31,9 @@ node {
     stage('yarn install') {
         sh "mvn com.github.eirslett:frontend-maven-plugin:yarn"
     }
-    
+    stage('bower install') {
+        sh "mvn com.github.eirslett:frontend-maven-plugin:bower"
+    } 
     stage('backend tests') {
         try {
             sh "mvn test"
