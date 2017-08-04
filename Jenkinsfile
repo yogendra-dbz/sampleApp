@@ -1,20 +1,16 @@
 #!/usr/bin/env groovy
 
 node {
-    tools {
-	maven 'maven'
-	jdk 'jdk8'
-}
-stages {
-	stage ('Initialize') {
-		steps {
-			sh '''
-				echo "PATH = ${PATH}"
-				echo "M2_HOME = ${M2_HOME}"
-			'''
-		}
-	}
-}
+    stage('configure Java') {
+      tool name: 'jdk8', type: 'jdk'
+    }
+    stage('configure Maven') {
+     tool name: 'maven', type: 'maven'
+    }
+    stage('Initialize') {
+      sh sh 'echo "PATH = ${PATH}"'
+      sh 'echo "M2_HOME = ${M2_HOME}"'
+    }
     stage('checkout') {
         checkout scm
     }
