@@ -34,7 +34,7 @@ node {
 
     stage('backend tests') {
         try {
-            sh "./mvnw test"
+            sh "mvn test"
         } catch(err) {
             throw err
         } finally {
@@ -44,7 +44,7 @@ node {
 
     stage('frontend tests') {
         try {
-            sh "./mvnw com.github.eirslett:frontend-maven-plugin:gulp -Dfrontend.gulp.arguments=test"
+            sh "mvn com.github.eirslett:frontend-maven-plugin:gulp -Dfrontend.gulp.arguments=test"
         } catch(err) {
             throw err
         } finally {
@@ -52,14 +52,16 @@ node {
         }
     }
 
+   stage('quality analysis') {
+        withSonarQubeEnv('sonar') {
+            sh "mvn sonar:sonar"
+        }
+    }
+
+
     stage('package and deploy') {
         sh "./mvnw com.heroku.sdk:heroku-maven-plugin:1.1.1:deploy -DskipTests -Pprod -Dheroku.appName="
         archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
     }
 
-    stage('quality analysis') {
-        withSonarQubeEnv('sonar') {
-            sh "./mvnw sonar:sonar"
-        }
-    }
 }
