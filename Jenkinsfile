@@ -18,6 +18,9 @@ node {
     stage('check java') {
         sh "java -version"
     }
+     stage('check maven') {
+        sh "mvn --version"
+    }
 
     stage('clean') {
         sh "chmod +x mvnw"
