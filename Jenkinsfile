@@ -15,7 +15,9 @@ node {
         sh "java -version"
     }
      stage('check maven') {
-        sh "mvn --version"
+     	def mvnHome = tool 'maven'
+  	env.PATH = "${mvnHome}/bin:${env.PATH}"
+  	sh 'mvn -B verify'
     }
 
     stage('clean') {
