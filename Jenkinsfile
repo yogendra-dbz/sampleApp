@@ -8,7 +8,7 @@ node {
      tool name: 'maven', type: 'maven'
     }
     stage('Initialize') {
-      sh sh 'echo "PATH = ${PATH}"'
+      sh 'echo "PATH = ${PATH}"'
       sh 'echo "M2_HOME = ${M2_HOME}"'
     }
     stage('checkout') {
