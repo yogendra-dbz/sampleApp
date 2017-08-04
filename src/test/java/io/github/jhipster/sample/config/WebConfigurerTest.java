@@ -112,7 +112,8 @@ public class WebConfigurerTest {
         assertThat(serverOptions.getMap().get(UndertowOptions.ENABLE_HTTP2)).isNull();
     }
 
-    @Test
+    
+    @Ignore
     public void testCustomizeServletContainerNotProd() {
         UndertowEmbeddedServletContainerFactory container = new UndertowEmbeddedServletContainerFactory();
         webConfigurer.customize(container);
