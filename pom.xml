@@ -651,6 +651,15 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
+                <plugin>
+    <groupId>com.boxfuse.client</groupId>
+    <artifactId>boxfuse-maven-plugin</artifactId>
+    <version>1.28.5.1383</version>
+    <configuration>
+        <user>ad906f05e4d34c348d11e69fd585a3b7</user>
+        <secret>HbP3iIGUR7UYSQ87hlb4L2N1iLx7niAM1YDydPuWZ2gaktOWHyG1W3eaZkeGIx6k</secret>
+    </configuration>
+</plugin> 
             </plugins>
         </pluginManagement>
     </build>

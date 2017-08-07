@@ -54,16 +54,11 @@ node {
         }
     }
 
-   stage('quality analysis') {
-        withSonarQubeEnv('sonar') {
-            sh "mvn sonar:sonar"
-        }
-        waitForQualityGate()
-    }
 
 
     stage('package and deploy') {
-        sh "./mvnw com.heroku.sdk:heroku-maven-plugin:1.1.1:deploy -DskipTests -Pprod -Dheroku.appName="
+        sh "mvn -Pprod -DskipTests package"
+        sh "boxfuse run -env=prod"
         archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
     }
 
