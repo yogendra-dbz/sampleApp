@@ -31,6 +31,15 @@
     "messageBroker": false,
     "serviceDiscoveryType": false,
     "clientPackageManager": "yarn",
-    "clientFramework": "angular1"
+    "clientFramework": "angular1",
+    "appsFolders": [
+      "jhipster-sample-app-master"
+    ],
+    "directoryPath": "../",
+    "jwtSecretKey": "dc1dca5a590453b05cf0ebf73b0b9d4e4dc2ce88",
+    "dockerRepositoryName": "yogendra8singh/sampleapp",
+    "dockerPushCommand": "docker push yogendra8singh/sampleapp",
+    "kubernetesNamespace": "default",
+    "kubernetesServiceType": "LoadBalancer"
   }
 }

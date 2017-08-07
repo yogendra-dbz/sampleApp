@@ -17,7 +17,8 @@ class OperationGatlingTest extends Simulation {
     // Log failed HTTP requests
     //context.getLogger("io.gatling.http").setLevel(Level.valueOf("DEBUG"))
 
-    val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://127.0.0.1:8080"""
+    //val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://127.0.0.1:8080"""
+    val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://ec2-52-59-161-106.eu-central-1.compute.amazonaws.com:8080"""
 
     val httpConf = http
         .baseURL(baseURL)
