@@ -54,6 +54,15 @@ node {
         }
     }
 
-
+   stage('package and deploy') {
+		 sh "mvn -Pprod -DskipTests package"
+		 sh "boxfuse run -env=prod"
+		 archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+	}
+ 
+	stage('Gatling load testing'){
+	   sh "mvn gatling:execute"
+	   gatlingArchive()
+	}
 
 }
