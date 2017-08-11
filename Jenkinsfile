@@ -60,9 +60,5 @@ node {
 		 archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
 	}
  
-	stage('Gatling load testing'){
-	   sh "mvn gatling:execute"
-	   gatlingArchive()
-	}
 
 }
