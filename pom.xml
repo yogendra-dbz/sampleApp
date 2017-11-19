@@ -14,7 +14,16 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Jhipster Sample Application</name>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>boxfuse-repo</id>
+            <url>https://files.boxfuse.com</url>
+        </pluginRepository>
+    </pluginRepositories>
     <properties>
         <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
         <assertj.version>3.6.2</assertj.version>
