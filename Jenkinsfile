@@ -55,7 +55,8 @@ node {
     }
 
    stage('package and deploy') {
-		 sh "mvn -Pprod -DskipTests package"
+		 sh "mvn package -Pprod -DskipTests dockerfile:build"
+	         sh "docker image tag SampleApplication lab4.southeastasia.cloudapp.azure.com:5000/SampleApplication"
 		 archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
 	}
  
