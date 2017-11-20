@@ -37,8 +37,8 @@
     ],
     "directoryPath": "../",
     "jwtSecretKey": "dc1dca5a590453b05cf0ebf73b0b9d4e4dc2ce88",
-    "dockerRepositoryName": "yogendra8singh/sampleapp",
-    "dockerPushCommand": "docker push yogendra8singh/sampleapp",
+    "dockerRepositoryName": "lab4.southeastasia.cloudapp.azure.com:5000/sampleApp",
+    "dockerPushCommand": "docker push lab4.southeastasia.cloudapp.azure.com:5000/sampleApp",
     "kubernetesNamespace": "default",
     "kubernetesServiceType": "LoadBalancer"
   }
