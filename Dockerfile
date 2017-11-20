@@ -7,6 +7,8 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
 # add directly the war
 ADD target/*.war /app.war
 
+TAG SampleApplication
+
 EXPOSE 8080
 CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \
     sleep ${JHIPSTER_SLEEP} && \
