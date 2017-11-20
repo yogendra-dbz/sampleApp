@@ -596,6 +596,8 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker-maven-plugin.version}</version>
                 <configuration>
+                    <repository>sampleApp</repository>
+                    <tag>${project.version}</tag>
                     <imageName>jhipstersampleapplication</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <resources>
