@@ -17,7 +17,7 @@ services:
         #- REGISTRY_HTTP_TLS_KEY=/certs/domain.key
 
         # uncomment to enable tls with letsencrypt
-        - REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE=/home/adminis/LETSENCRYPT_CACHEFILE/cache-file
+        - REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE=/letsencrypt/cachefile
         - REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL=yogendra.thakur@mindtree.com
     volumes:
         # uncomment to enable basic auth
@@ -30,6 +30,7 @@ services:
 
         # uncomment to persist data to a volume
         - ~/volumes/registry/data:/var/lib/registry
+        - /letsencrypt/cachefile:/letsencrypt/cachefile
   registry-ui:
     image: konradkleine/docker-registry-frontend:v2
     environment:
