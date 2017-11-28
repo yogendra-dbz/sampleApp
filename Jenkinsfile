@@ -61,8 +61,6 @@ node {
    
   stage 'Build Infrastructure' {
  
-    // // Get some code from a GitHub repository
-    git url: 'https://github.com/yogendra8singh/infrastructure.git'
  
     // Get the Terraform tool.
     def tfHome = tool name: 'Terraform', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
