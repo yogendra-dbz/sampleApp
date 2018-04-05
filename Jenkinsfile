@@ -2,17 +2,11 @@
 
 node {
     stage('Preparation') {
-	  step{
-		tool name: 'jdk8', type: 'jdk'
-	  }
-      step {
-		tool name: 'maven', type: 'maven'
-	  }
-	  step {
-		def mvnHome = tool 'maven'
-		env.PATH = "${mvnHome}/bin:${env.PATH}"
-	  }
-    }
+	  tool name: 'jdk8', type: 'jdk'
+	  tool name: 'maven', type: 'maven'
+	  def mvnHome = tool 'maven'
+	  env.PATH = "${mvnHome}/bin:${env.PATH}"
+	}
    
     stage('Pull') {
         checkout scm
@@ -24,16 +18,14 @@ node {
     }
 
     stage('Junit') {
-	  step{
-        try {
+	    try {
             sh "mvn test"
         } catch(err) {
             throw err
         } finally {
             junit '**/target/surefire-reports/TEST-*.xml'
         }
-	  }	
-    }
+	}
 	
 	stage('Static Code analysis'){
        withSonarQubeEnv {
@@ -42,20 +34,17 @@ node {
     }
 
     stage('Frontend test') {
-	    step {
-            sh "mvn com.github.eirslett:frontend-maven-plugin:install-node-and-yarn -DnodeVersion=v6.11.1 -DyarnVersion=v0.27.5"
-            sh "mvn com.github.eirslett:frontend-maven-plugin:yarn"
-            sh "mvn com.github.eirslett:frontend-maven-plugin:bower"
+		try {
+			sh "mvn com.github.eirslett:frontend-maven-plugin:install-node-and-yarn -DnodeVersion=v6.11.1 -DyarnVersion=v0.27.5"
+			sh "mvn com.github.eirslett:frontend-maven-plugin:yarn"
+			sh "mvn com.github.eirslett:frontend-maven-plugin:bower"
+			sh "mvn com.github.eirslett:frontend-maven-plugin:gulp -Dfrontend.gulp.arguments=test"
+		} catch(err) {
+			throw err
+		} finally {
+			junit '**/target/test-results/karma/TESTS-*.xml'
 		}
-		step{
-			try {
-				sh "mvn com.github.eirslett:frontend-maven-plugin:gulp -Dfrontend.gulp.arguments=test"
-			} catch(err) {
-				throw err
-			} finally {
-				junit '**/target/test-results/karma/TESTS-*.xml'
-			}
-		}
+		
     }
 
    stage('package') {
