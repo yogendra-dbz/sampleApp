@@ -596,6 +596,8 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker-maven-plugin.version}</version>
                 <configuration>
+				    <serverId>dockerRegistry</serverId>
+                    <registryUrl>https://lab4.southeastasia.cloudapp.azure.com/v2/</registryUrl>  
                     <repository>lab4.southeastasia.cloudapp.azure.com/sampleapplication</repository>
                     <tag>sampleapplication:latest</tag>
                     <imageName>lab4.southeastasia.cloudapp.azure.com/sampleapplication</imageName>
