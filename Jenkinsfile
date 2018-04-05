@@ -1,40 +1,23 @@
 #!/usr/bin/env groovy
 
 node {
-    stage('configure Java') {
+    stage('Preparation') {
       tool name: 'jdk8', type: 'jdk'
+      tool name: 'maven', type: 'maven'
+	  def mvnHome = tool 'maven'
+  	  env.PATH = "${mvnHome}/bin:${env.PATH}"
     }
-    stage('configure Maven') {
-     tool name: 'maven', type: 'maven'
-    }
-    stage('checkout') {
+   
+    stage('Pull') {
         checkout scm
     }
 
-    stage('check java') {
-        sh "java -version"
-    }
-     stage('check maven') {
-     	def mvnHome = tool 'maven'
-  	env.PATH = "${mvnHome}/bin:${env.PATH}"
-    }
-
-    stage('clean') {
+    stage('Build') {
         sh "chmod +x mvnw"
         sh "mvn clean"
     }
 
-    stage('install tools') {
-        sh "mvn com.github.eirslett:frontend-maven-plugin:install-node-and-yarn -DnodeVersion=v6.11.1 -DyarnVersion=v0.27.5"
-    }
-
-    stage('yarn install') {
-        sh "mvn com.github.eirslett:frontend-maven-plugin:yarn"
-    }
-    stage('bower install') {
-        sh "mvn com.github.eirslett:frontend-maven-plugin:bower"
-    } 
-    stage('backend tests') {
+    stage('Junit') {
         try {
             sh "mvn test"
         } catch(err) {
@@ -43,9 +26,18 @@ node {
             junit '**/target/surefire-reports/TEST-*.xml'
         }
     }
+	
+	stage('Static Code analysis'){
+       withSonarQubeEnv {
+        sh "mvn sonar:sonar"
+       }
+    }
 
-    stage('frontend tests') {
+    stage('Frontend test') {
         try {
+            sh "mvn com.github.eirslett:frontend-maven-plugin:install-node-and-yarn -DnodeVersion=v6.11.1 -DyarnVersion=v0.27.5"
+            sh "mvn com.github.eirslett:frontend-maven-plugin:yarn"
+            sh "mvn com.github.eirslett:frontend-maven-plugin:bower"
             sh "mvn com.github.eirslett:frontend-maven-plugin:gulp -Dfrontend.gulp.arguments=test"
         } catch(err) {
             throw err
@@ -55,9 +47,14 @@ node {
     }
 
    stage('package') {
-		 sh "mvn package -Pprod -DskipTests docker:build -DpushImage"
+		 sh "mvn package -Pprod -DskipTests docker:build -DpushImage -DdockerImageTags=${params.ReleaseVersion}"
 		 archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
 	}
+	
+	
+	stage('publish'){
+	nexusArtifactUploader artifacts: [[artifactId: 'app', classifier: '', file: 'target/shopping-app-1.0.0.war', type: 'war']], credentialsId: 'nexus3', groupId: 'shopping', nexusUrl: 'cape-test.southeastasia.cloudapp.azure.com:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'Nexus', version: '${params.ReleaseVersion}'
+	} 
    
 
 }

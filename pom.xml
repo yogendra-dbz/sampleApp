@@ -9,11 +9,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>io.github.jhipster.sample</groupId>
-    <artifactId>jhipster-sample-application</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>shopping</groupId>
+    <artifactId>shopping-app</artifactId>
+    <version>1.0.0</version>
     <packaging>war</packaging>
-    <name>Jhipster Sample Application</name>
+    <name>Sample Application</name>
     <pluginRepositories>
         <pluginRepository>
             <id>central</id>
