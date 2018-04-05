@@ -12,6 +12,12 @@
 
         vm.isNavbarCollapsed = true;
         vm.isAuthenticated = Principal.isAuthenticated;
+        vm.clickedAccount = false;
+        if (sessionStorage.getItem('cartNumber') !== undefined && sessionStorage.getItem('cartNumber') !== null) {
+            vm.cartNumber = sessionStorage.getItem('cartNumber');
+        } else {
+            vm.cartNumber = 0;
+        }
 
         ProfileService.getProfileInfo().then(function(response) {
             vm.inProduction = response.inProduction;
@@ -42,5 +48,16 @@
         function collapseNavbar() {
             vm.isNavbarCollapsed = true;
         }
+
+        $(document).ready(function() {
+            $(document).on('click', function() {
+                if (sessionStorage.getItem('cartNumber') !== undefined && sessionStorage.getItem('cartNumber') !== null) {
+                    vm.cartNumber = sessionStorage.getItem('cartNumber');
+                } else {
+                    vm.cartNumber = 0;
+                }
+
+            })
+        });
     }
 })();

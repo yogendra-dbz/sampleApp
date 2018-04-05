@@ -25,6 +25,7 @@ module.exports = function (config) {
             // bower:js
             'src/main/webapp/bower_components/jquery/dist/jquery.js',
             'src/main/webapp/bower_components/messageformat/messageformat.js',
+            'src/main/webapp/bower_components/bootstrap/dist/js/bootstrap.js',
             'src/main/webapp/bower_components/json3/lib/json3.js',
             'src/main/webapp/bower_components/angular/angular.js',
             'src/main/webapp/bower_components/angular-aria/angular-aria.js',
@@ -101,7 +102,7 @@ module.exports = function (config) {
         singleRun: false,
 
         // to avoid DISCONNECTED messages when connecting to slow virtual machines
-        browserDisconnectTimeout: 10000, // default 2000
+        browserDisconnectTimeout: 60000, // default 2000
         browserDisconnectTolerance: 1, // default 0
         browserNoActivityTimeout: 4 * 60 * 1000 //default 10000
     });
