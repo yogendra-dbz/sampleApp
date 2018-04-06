@@ -85,5 +85,29 @@ node {
 		}
 	    }
 
+   }
+	
+   stage('Performance Testing'){
+     try {
+		input message: 'Perf Test?', ok: 'Run'
+		Run = true
+	} catch (err) {
+		slackSend channel: '#ci', color: 'warning', message: "Perf Test Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
+		Run = false
+		currentBuild.result = 'SUCCESS'
 	}
+	
+	if(Run){
+	   try {
+	   sh "mvn gatling:execute"
+	   gatlingArchive()
+	   currentBuild.result = 'SUCCESS'
+	   } catch (err) {
+		slackSend channel: '#ci', color: 'warning', message: "Deployment Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
+		Deploy = false
+		currentBuild.result = 'UNSTABLE'
+	  }
+	}   
+     }
+		
  }
