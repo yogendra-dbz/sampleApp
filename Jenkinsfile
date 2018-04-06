@@ -53,9 +53,37 @@ node {
 	}
 	
 	
-	stage('publish'){
+    stage('publish'){
 	nexusArtifactUploader artifacts: [[artifactId: 'app', classifier: '', file: 'target/shopping-app-1.0.0.war', type: 'war']], credentialsId: 'nexus3', groupId: 'shopping', nexusUrl: 'cape-test.southeastasia.cloudapp.azure.com:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'Nexus', version: "${params.ReleaseVersion}"
-	} 
-   
+    }
+	
+    stage ('deploy'){
+        try {
+		input message: 'New deployment?', ok: 'Deploy'
+		Deploy = true
+	} catch (err) {
+		slackSend channel: '#ci', color: 'warning', message: "Deployment Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
+		Deploy = false
+		currentBuild.result = 'UNSTABLE'
+	}
+	
+	if (Deploy){
+		// Output Ansible-playbook version
+		sh "ansible-playbook --version"
+		
+		// Run Ansible play book			
+		sh "set +e;ansible-playbook -i hosts /opt/ansible/shoppingcart/update_swarm_cluster.yml --extra-vars 'release=${params.ReleaseVersion}'; echo \$? > swarmRollingUpdateStatus"
+	
+		def swarmRollingUpdateExitCode = readFile('swarmRollingUpdateStatus').trim()
+		echo "Ansible Exit Code: ${swarmRollingUpdateExitCode}"
+		
+		if (swarmRollingUpdateExitCode == "0") {
+			currentBuild.result = 'SUCCESS'
+		}else{
+			slackSend channel: '#ci', color: '#0080ff', message: "Docker Swarm Rolling update failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
+			currentBuild.result = 'FAILURE'
+		}
+	    }
 
-}
+	}
+ }
