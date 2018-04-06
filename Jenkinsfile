@@ -57,15 +57,16 @@ node {
 	nexusArtifactUploader artifacts: [[artifactId: 'app', classifier: '', file: 'target/shopping-app-1.0.0.war', type: 'war']], credentialsId: 'nexus3', groupId: 'shopping', nexusUrl: 'cape-test.southeastasia.cloudapp.azure.com:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'Nexus', version: "${params.ReleaseVersion}"
     }
 	
-    stage ('deploy'){
-        try {
+    stage ('Deploy'){
+        def Deploy = false;
+		try {
 		input message: 'New deployment?', ok: 'Deploy'
 		Deploy = true
-	} catch (err) {
+		} catch (err) {
 		slackSend channel: '#ci', color: 'warning', message: "Deployment Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
 		Deploy = false
 		currentBuild.result = 'UNSTABLE'
-	}
+		}
 	
 	if (Deploy){
 		// Output Ansible-playbook version
@@ -88,6 +89,7 @@ node {
    }
 	
    stage('Performance Testing'){
+     def Run = false;
      try {
 		input message: 'Perf Test?', ok: 'Run'
 		Run = true
@@ -104,7 +106,6 @@ node {
 	   currentBuild.result = 'SUCCESS'
 	   } catch (err) {
 		slackSend channel: '#ci', color: 'warning', message: "Deployment Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
-		Deploy = false
 		currentBuild.result = 'UNSTABLE'
 	  }
 	}   
