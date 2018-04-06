@@ -60,12 +60,12 @@ node {
     stage ('Deploy'){
         def Deploy = false;
 		try {
-		input message: 'New deployment?', ok: 'Deploy'
-		Deploy = true
-		} catch (err) {
-		slackSend channel: '#ci', color: 'warning', message: "Deployment Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
-		Deploy = false
-		currentBuild.result = 'UNSTABLE'
+			input message: 'New deployment?', ok: 'Deploy'
+			Deploy = true
+			} catch (err) {
+			slackSend channel: '#ci', color: 'warning', message: "Deployment Discarded: ${env.JOB_NAME} - ${env.BUILD_NUMBER} ()"
+			Deploy = false
+			currentBuild.result = 'SUCCESS'
 		}
 	
 	if (Deploy){
