@@ -1,14 +1,11 @@
 #!/usr/bin/env groovy
 
 node {
-    stage('Preparation') {
-	  tool name: 'jdk8', type: 'jdk'
-	  tool name: 'maven', type: 'maven'
-	  def mvnHome = tool 'maven'
-	  env.PATH = "${mvnHome}/bin:${env.PATH}"
-	}
-   
     stage('Pull') {
+	tool name: 'jdk8', type: 'jdk'
+	tool name: 'maven', type: 'maven'
+	def mvnHome = tool 'maven'
+	env.PATH = "${mvnHome}/bin:${env.PATH}"    
         checkout scm
     }
 
@@ -27,11 +24,11 @@ node {
         }
 	}
 	
-	stage('Static Code analysis'){
+     stage('Static Code analysis'){
        withSonarQubeEnv {
         sh "mvn sonar:sonar"
        }
-    }
+     }
 
     stage('Frontend test') {
 		try {
@@ -47,7 +44,7 @@ node {
 		
     }
 
-   stage('package') {
+   stage('Package') {
 		 sh "mvn package -Pprod -DskipTests docker:build -DpushImage -DdockerImageTags=${params.ReleaseVersion}"
 		 archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
 	}
