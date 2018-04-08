@@ -25,9 +25,20 @@ node {
 	}
 	
      stage('Static Code analysis'){
+       try {
        withSonarQubeEnv {
         sh "mvn sonar:sonar"
        }
+       } catch(error) {
+	 def issue = [fields: [ project: [key: 'CAPE'],
+			summary: "Jenkins Job ${JOB_NAME} - #${BUILD_NUMBER} - Stage ${STAGE_NAME} FAILED",
+			description: 'New JIRA Created from Jenkins.',
+			issuetype: [name: 'Bug']]]
+	 def newIssue = jiraNewIssue issue: issue, site: 'CAPE'
+	 echo newIssue.data.key
+	 currentBuild.result = 'FAILURE'
+						 
+      }	     
      }
 
     stage('Frontend test') {
