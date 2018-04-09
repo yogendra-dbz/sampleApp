@@ -81,7 +81,7 @@ node {
 		sh "ansible-playbook --version"
 		
 		// Run Ansible play book			
-		sh "set +e;ansible-playbook -i hosts /opt/ansible/shoppingcart/update_swarm_cluster.yml --extra-vars 'release=${params.ReleaseVersion}'; echo \$? > swarmRollingUpdateStatus"
+		sh "set +e;ansible-playbook -i /opt/ansible/shoppingcart/hosts /opt/ansible/shoppingcart/update_swarm_cluster.yml --extra-vars 'release=${params.ReleaseVersion}'; echo \$? > swarmRollingUpdateStatus"
 	
 		def swarmRollingUpdateExitCode = readFile('swarmRollingUpdateStatus').trim()
 		echo "Ansible Exit Code: ${swarmRollingUpdateExitCode}"
