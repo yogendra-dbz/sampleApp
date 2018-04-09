@@ -56,7 +56,7 @@ node {
     }
 
    stage('Package') {
-		 sh "mvn package -DskipTests docker:build -DpushImage -DdockerImageTags=${params.ReleaseVersion}"
+		 sh "mvn package -Pprod -DskipTests docker:build -DpushImage -DdockerImageTags=${params.ReleaseVersion}"
 		 archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
 	}
 	
