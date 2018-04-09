@@ -18,7 +18,7 @@ class LabelGatlingTest extends Simulation {
     //context.getLogger("io.gatling.http").setLevel(Level.valueOf("DEBUG"))
 
     //val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://127.0.0.1:8080"""
-    val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://35.168.203.14"""
+    val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://35.168.203.14:8080"""
 
     val httpConf = http
         .baseURL(baseURL)
