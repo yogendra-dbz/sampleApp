@@ -30,11 +30,11 @@ node {
         sh "mvn sonar:sonar"
        }
        } catch(error) {
-	 def issue = [fields: [ project: [key: 'CAPE'],
+	 def issue = [fields: [ project: [key: 'DEV'],
 			summary: "Jenkins Job ${JOB_NAME} - #${BUILD_NUMBER} - Stage ${STAGE_NAME} FAILED",
 			description: 'New JIRA Created from Jenkins.',
 			issuetype: [name: 'Bug']]]
-	 def newIssue = jiraNewIssue issue: issue, site: 'CAPE'
+	 def newIssue = jiraNewIssue issue: issue, site: 'DEV'
 	 echo newIssue.data.key
 	 currentBuild.result = 'FAILURE'
 						 
